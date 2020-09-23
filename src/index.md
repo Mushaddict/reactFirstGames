@@ -60,7 +60,7 @@ React 是什么？
 React 是一个声明式，高效且灵活的用于构建用户界面的 JavaScript 库。使用 React 可以将一些简短、独立的代码片段组合成复杂的 UI 界面，这些代码片段被称作“组件”。
 
 React 中拥有多种不同类型的组件，我们先从 React.Component 的子类开始介绍：
-
+```javascript
 class ShoppingList extends React.Component {
   render() {
     return (
@@ -75,6 +75,7 @@ class ShoppingList extends React.Component {
     );
   }
 }
+```
 
 // 用法示例: <ShoppingList name="Mark" />
 我们马上会讨论这些又奇怪、又像 XML 的标签。我们通过使用组件来告诉 React 我们希望在屏幕上看到什么。当数据发生改变时，React 会高效地更新并重新渲染我们的组件。
@@ -83,10 +84,12 @@ class ShoppingList extends React.Component {
 
 render 方法的返回值描述了你希望在屏幕上看到的内容。React 根据描述，然后把结果展示出来。更具体地来说，render 返回了一个 React 元素，这是一种对渲染内容的轻量级描述。大多数的 React 开发者使用了一种名为 “JSX” 的特殊语法，JSX 可以让你更轻松地书写这些结构。语法 <div /> 会被编译成 React.createElement('div')。上述的代码等同于：
 
+```javascript
 return React.createElement('div', {className: 'shopping-list'},
   React.createElement('h1', /* ... h1 children ... */),
   React.createElement('ul', /* ... ul children ... */)
 );
+```
 查看完整展开的代码。
 
 如果你对这个比较感兴趣，可以查阅 API 文档了解有关 createElement() 更详细的用法。但在接下来的教程中，我们并不会直接使用这个方法，而是继续使用 JSX。
@@ -102,9 +105,11 @@ return React.createElement('div', {className: 'shopping-list'},
 
 通过阅读代码，你可以看到我们有三个 React 组件：
 
+```javascript
 Square
 Board
 Game
+```
 Square 组件渲染了一个单独的 <button>。Board 组件渲染了 9 个方块。Game 组件渲染了含有默认值的一个棋盘，我们一会儿会修改这些值。到目前为止还没有可以交互的组件。
 
 通过 Props 传递数据
@@ -114,13 +119,16 @@ Square 组件渲染了一个单独的 <button>。Board 组件渲染了 9 个方�
 
 在 Board 组件的 renderSquare 方法中，我们将代码改写成下面这样，传递一个名为 value 的 prop 到 Square 当中：
 
+```javascript
 class Board extends React.Component {
   renderSquare(i) {
     return <Square value={i} />;
   }
 }
+```
 修改 Square 组件中的 render 方法，把 {/* TODO */} 替换为 {this.props.value}，以显示上文中传入的值：
 
+```javascript
 class Square extends React.Component {
   render() {
     return (
@@ -130,6 +138,7 @@ class Square extends React.Component {
     );
   }
 }
+```
 修改前：
 
 React Devtools
@@ -143,6 +152,7 @@ React Devtools
 给组件添加交互功能
 接下来我们试着让棋盘的每一个格子在点击之后能落下一颗 “X” 作为棋子。 首先，我们把 Square 组件中 render() 方法的返回值中的 button 标签修改为如下内容：
 
+```javascript
 class Square extends React.Component {
   render() {
     return (
@@ -152,12 +162,14 @@ class Square extends React.Component {
     );
   }
 }
+```
 如果此刻点击某个格子，浏览器会弹出提示框。
 
 注意
 
 为了少输入代码，同时为了避免 this 造成的困扰，我们在这里使用箭头函数 来进行事件处理，如下所示：
 
+```javascript
 class Square extends React.Component {
  render() {
    return (
@@ -167,6 +179,7 @@ class Square extends React.Component {
    );
  }
 }
+```
 注意：此处使用了 onClick={() => alert('click')} 的方式向 onClick 这个 prop 传入一个函数。 React 将在单击时调用此函数。但很多人经常忘记编写 () =>，而写成了 onClick={alert('click')}，这种常见的错误会导致每次这个组件渲染的时候都会触发弹出框。
 
 接下来，我们希望 Square 组件可以“记住”它被点击过，然后用 “X” 来填充对应的方格。我们用 state 来实现所谓“记忆”的功能。
@@ -175,6 +188,7 @@ class Square extends React.Component {
 
 首先，我们向这个 class 中添加一个构造函数，用来初始化 state：
 
+```javascript
 class Square extends React.Component {
   constructor(props) {
     super(props);
@@ -191,6 +205,7 @@ class Square extends React.Component {
     );
   }
 }
+```
 注意
 
 在 JavaScript class 中，每次你定义其子类的构造函数时，都需要调用 super 方法。因此，在所有含有构造函数的的 React 组件中，构造函数必须以 super(props) 开头。
@@ -202,6 +217,7 @@ class Square extends React.Component {
 为了更好的可读性，将 className 和 onClick 的 prop 分两行书写。
 修改之后，Square 组件中 render 方法的返回值中的 <button> 标签就变成了下面这样：
 
+```javascript
 class Square extends React.Component {
   constructor(props) {
     super(props);
@@ -221,6 +237,7 @@ class Square extends React.Component {
     );
   }
 }
+```
 在 Square 组件 render 方法中的 onClick 事件监听函数中调用 this.setState，我们就可以在每次 <button> 被点击的时候通知 React 去重新渲染 Square 组件。组件更新之后，Square 组件的 this.state.value 的值会变为 'X'，因此，我们在游戏棋盘上就能看见 X 了。点击任意一个方格，X 就会出现了。
 
 每次在组件中调用 setState 时，React 都会自动更新其子组件。
@@ -255,6 +272,7 @@ React Devtools
 
 为 Board 组件添加构造函数，将 Board 组件的初始状态设置为长度为 9 的空值数组：
 
+```javascript
 class Board extends React.Component {
   constructor(props) {
     super(props);
@@ -266,25 +284,31 @@ class Board extends React.Component {
   renderSquare(i) {
     return <Square value={i} />;
   }
+  ```
 当我们填充棋盘后，this.state.squares 数组的值可能如下所示：
-
+```javascript
 [
   'O', null, 'X',
   'X', 'X', 'O',
   'O', null, null,
 ]
+```
 Board 组件当前的 renderSquare 方法看起来像下面这样：
 
+```javascript
   renderSquare(i) {
     return <Square value={i} />;
   }
+  ```
 开始时，我们依次使把 0 到 8 的值通过 prop 从 Board 向下传递，从而让它们显示出来。上一步与此不同，我们根据 Square 自己内部的 state，使用了 “X” 来代替之前的数字。因此，Square 忽略了当前从 Board 传递给它的那个 value prop。
 
 让我们再一次使用 prop 的传递机制。我们通过修改 Board 来指示每一个 Square 的当前值（'X', 'O', 或者 null）。我们在 Board 的构造函数中已经定义好了 squares 数组，这样，我们就可以通过修改 Board 的 renderSquare 方法来读取这些值了。
 
+```javascript
   renderSquare(i) {
     return <Square value={this.state.squares[i]} />;
   }
+  ```
 查看此步完整代码示例
 
 这样，每个 Square 就都能接收到一个 value prop 了，这个 prop 的值可以是 'X'、 'O'、 或 null（null 代表空方格）。
@@ -293,6 +317,7 @@ Board 组件当前的 renderSquare 方法看起来像下面这样：
 
 相反，从 Board 组件向 Square 组件传递一个函数，当 Square 被点击的时候，这个函数就会被调用。接着，我们将 Board 组件的 renderSquare 方法改写为如下效果：
 
+```javascript
   renderSquare(i) {
     return (
       <Square
@@ -301,6 +326,7 @@ Board 组件当前的 renderSquare 方法看起来像下面这样：
       />
     );
   }
+  ```
 注意
 
 为了提高可读性，我们把返回的 React 元素拆分成了多行，同时在最外层加了小括号，这样 JavaScript 解析的时候就不会在 return 的后面自动插入一个分号从而破坏代码结构了。
@@ -312,6 +338,7 @@ Board 组件当前的 renderSquare 方法看起来像下面这样：
 删掉 Square 组件中的构造函数 constructor，因为该组件不需要再保存游戏的 state。
 进行上述修改之后，代码会变成下面这样:
 
+```javascript
 class Square extends React.Component {
   render() {
     return (
@@ -324,6 +351,7 @@ class Square extends React.Component {
     );
   }
 }
+```
 每一个 Square 被点击时，Board 提供的 onClick 函数就会触发。我们回顾一下这是怎么实现的：
 
 向 DOM 内置元素 <button> 添加 onClick prop，让 React 开启对点击事件的监听。
@@ -337,6 +365,7 @@ class Square extends React.Component {
 
 这时候我们点击 Square 的时候，浏览器会报错，因为我们还没有定义 handleClick 方法。我们现在来向 Board 里添加 handleClick 方法：
 
+```javascript
 class Board extends React.Component {
   constructor(props) {
     super(props);
@@ -385,6 +414,7 @@ class Board extends React.Component {
     );
   }
 }
+```
 查看此步完整代码示例
 
 现在，我们可以通过点击 Square 来填充那些方格，效果与之前相同。但是，当前 state 没有保存在单个的 Square 组件中，而是保存在了 Board 组件中。每当 Board 的 state 发生变化的时候，这些 Square 组件都会重新渲染一次。把所有 Square 的 state 保存在 Board 组件中可以让我们在将来判断出游戏的胜者。
@@ -399,6 +429,7 @@ class Board extends React.Component {
 一般来说，有两种改变数据的方式。第一种方式是直接修改变量的值，第二种方式是使用新的一份数据替换旧数据。
 
 直接修改数据
+```javascript
 var player = {score: 1, name: 'Jeff'};
 player.score = 2;
 // player 修改后的值为 {score: 2, name: 'Jeff'}
@@ -410,6 +441,7 @@ var newPlayer = Object.assign({}, player, {score: 2});
 
 // 使用对象展开语法，就可以写成：
 // var newPlayer = {...player, score: 2};
+```
 不直接修改（或改变底层数据）这种方式和前一种方式的结果是一样的，这种方式有以下几点好处：
 
 简化复杂的功能
@@ -432,6 +464,7 @@ var newPlayer = Object.assign({}, player, {score: 2});
 
 把 Square 类替换成下面的函数：
 
+```javascript
 function Square(props) {
   return (
     <button className="square" onClick={props.onClick}>
@@ -439,6 +472,7 @@ function Square(props) {
     </button>
   );
 }
+```
 我们把两个 this.props 都替换成了 props。
 
 查看此步完整代码示例
@@ -452,6 +486,7 @@ function Square(props) {
 
 我们将 “X” 默认设置为先手棋。你可以通过修改 Board 组件的构造函数中的初始 state 来设置默认的第一步棋子：
 
+```javascript
 class Board extends React.Component {
   constructor(props) {
     super(props);
@@ -460,8 +495,10 @@ class Board extends React.Component {
       xIsNext: true,
     };
   }
+```
 棋子每移动一步，xIsNext（布尔值）都会反转，该值将确定下一步轮到哪个玩家，并且游戏的状态会被保存下来。我们将通过修改 Board 组件的 handleClick 函数来反转 xIsNext 的值：
 
+```javascript
   handleClick(i) {
     const squares = this.state.squares.slice();
     squares[i] = this.state.xIsNext ? 'X' : 'O';
@@ -470,10 +507,12 @@ class Board extends React.Component {
       xIsNext: !this.state.xIsNext,
     });
   }
+```
 修改之后，我们就实现了 “X” 和 “O” 轮流落子的效果。尝试玩一下。
 
 接下来修改 Board 组件 render 方法中 “status” 的值，这样就可以显示下一步是哪个玩家的了。
 
+```javascript
   render() {
     const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
 
@@ -533,11 +572,13 @@ class Board extends React.Component {
     );
   }
 }
+```
 查看此步完整代码示例
 
 判断出胜者
 至此我们就可以看出下一步会轮到哪位玩家，与此同时，我们还需要显示游戏的结果来判定游戏结束。拷贝如下 calculateWinner 函数并粘贴到文件底部：
 
+```javascript
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
@@ -557,10 +598,12 @@ function calculateWinner(squares) {
   }
   return null;
 }
+```
 传入长度为 9 的数组，此函数将判断出获胜者，并根据情况返回 “X”，“O” 或 “null”。
 
 接着，在 Board 组件的 render 方法中调用 calculateWinner(squares) 检查是否有玩家胜出。一旦有一方玩家胜出，就把获胜玩家的信息显示出来，比如，“胜者：X” 或者“胜者：O”。现在，我们把 Board 的 render 函数中的 status 的定义修改为如下代码：
 
+```javascript
   render() {
     const winner = calculateWinner(this.state.squares);
     let status;
@@ -572,8 +615,10 @@ function calculateWinner(squares) {
 
     return (
       // 其他部分没有修改
+```
 最后，修改 handleClick 事件，当有玩家胜出时，或者某个 Square 已经被填充时，该函数不做任何处理直接返回。
 
+```javascript
   handleClick(i) {
     const squares = this.state.squares.slice();
     if (calculateWinner(squares) || squares[i]) {
@@ -585,6 +630,7 @@ function calculateWinner(squares) {
       xIsNext: !this.state.xIsNext,
     });
   }
+```
 查看此步完整代码示例
 
 恭喜！现在你已经完成了井字棋！除此之外，你也已经掌握了 React 的基本常识。所以坚持到这一步的你才是真正的赢家呀！
@@ -599,6 +645,7 @@ function calculateWinner(squares) {
 
 我们把历史的 squares 数组保存在另一个名为 history 的数组中。history 数组保存了从第一步到最后一步的所有的棋盘状态。history 数组的结构如下所示：
 
+```javascript
 history = [
   // 第一步之前
   {
@@ -626,6 +673,7 @@ history = [
   },
   // ...
 ]
+```
 现在，我们需要确定应该在哪一个组件里保存 history 这个 state。
 
 再次提升状态
@@ -635,6 +683,7 @@ history = [
 
 首先，我们在 Game 组件的构造函数中初始化 state：
 
+```javascript
 class Game extends React.Component {
   constructor(props) {
     super(props);
@@ -660,6 +709,7 @@ class Game extends React.Component {
     );
   }
 }
+```
 下一步，我们让 Board 组件从 Game 组件中接收 squares 和 onClick 这两个 props。因为当前在 Board 组件中已经有一个对 Square 点击事件的监听函数了，所以我们需要把每一个 Square 的对应位置传递给 onClick 监听函数，这样监听函数就知道具体哪一个 Square 被点击了。以下是修改 Board 组件的几个必要步骤：
 
 删除 Board 组件中的 constructor 构造函数。
@@ -667,6 +717,7 @@ class Game extends React.Component {
 把 Board 组件的 renderSquare 中的 this.handleClick(i) 替换为 this.props.onClick(i)。
 修改后的 Board 组件如下所示：
 
+```javascript
 class Board extends React.Component {
   handleClick(i) {
     const squares = this.state.squares.slice();
@@ -720,8 +771,10 @@ class Board extends React.Component {
     );
   }
 }
+```
 接着，更新 Game 组件的 render 函数，使用最新一次历史记录来确定并展示游戏的状态：
 
+```javascript
   render() {
     const history = this.state.history;
     const current = history[history.length - 1];
@@ -748,8 +801,10 @@ class Board extends React.Component {
       </div>
     );
   }
+```
 由于 Game 组件渲染了游戏的状态，因此我们可以将 Board 组件 render 方法中对应的代码移除。修改之后，Board 组件的 render 函数如下所示：
 
+```javascript
   render() {
     return (
       <div>
@@ -771,8 +826,10 @@ class Board extends React.Component {
       </div>
     );
   }
+```
 最后，我们需要把 Board 组件的 handleClick 方法移动 Game 组件中。同时，我们也需要修改一下 handleClick 方法，因为这两个组件的 state 在结构上有所不同。在 Game 组件的 handleClick 方法中，我们需要把新的历史记录拼接到 history 上。
 
+```javascript
   handleClick(i) {
     const history = this.state.history;
     const current = history[history.length - 1];
@@ -788,6 +845,7 @@ class Board extends React.Component {
       xIsNext: !this.state.xIsNext,
     });
   }
+```
 注意
 
 concat() 方法可能与你比较熟悉的 push() 方法不太一样，它并不会改变原数组，所以我们推荐使用 concat()。
@@ -802,13 +860,15 @@ concat() 方法可能与你比较熟悉的 push() 方法不太一样，它并不
 在前文中提到的 React 元素被视为 JavaScript 一等公民中的对象（first-class JavaScript objects），因此我们可以把 React 元素在应用程序中当作参数来传递。在 React 中，我们还可以使用 React 元素的数组来渲染多个元素。
 
 在 JavaScript 中，数组拥有 map() 方法，该方法通常用于把某数组映射为另一个数组，例如：
-
+```javascript
 const numbers = [1, 2, 3];
 const doubled = numbers.map(x => x * 2); // [2, 4, 6]
+```
 我们可以通过使用 map 方法，把历史步骤映射为代表按钮的 React 元素，然后可以展示出一个按钮的列表，点击这些按钮，可以“跳转”到对应的历史步骤。
 
 现在，我们在 Game 组件的 render 方法中调用 history 的 map 方法：
 
+```javascript
   render() {
     const history = this.state.history;
     const current = history[history.length - 1];
@@ -847,29 +907,34 @@ const doubled = numbers.map(x => x * 2); // [2, 4, 6]
       </div>
     );
   }
+```
 查看此步完整代码示例
 
 对于井字棋历史记录的每一步，我们都创建出了一个包含按钮 <button> 元素的 <li> 的列表。这些按钮拥有一个 onClick 事件处理函数，在这个函数里调用了 this.jumpTo() 方法。但是我们还没有实现 jumpTo() 方法。到目前为止，我们可以看到一个游戏历史步骤的列表，以及开发者工具控制台的警告信息，警告信息如下：
-
+```javascript
 Warning: Each child in an array or iterator should have a unique “key” prop. Check the render method of “Game”.
-
+```
 我们来看一下上面的警告信息是什么意思。
 
 选择一个 key
 当我们需要渲染一个列表的时候，React 会存储这个列表每一项的相关信息。当我们要更新这个列表时，React 需要确定哪些项发生了改变。我们有可能增加、删除、重新排序或者更新列表项。
 
 想象一下把下面的代码
-
+```javascript
 <li>Alexa: 7 tasks left</li>
 <li>Ben: 5 tasks left</li>
+```
 转换成下面的代码
-
+```javascript
 <li>Ben: 9 tasks left</li>
 <li>Claudia: 8 tasks left</li>
 <li>Alexa: 5 tasks left</li>
+```
 除了数字发生了改变之外，阅读这段代码的人也许会认为我们把 Alexa 和 Ben 的顺序交换了位置，然后把 Claudia 插入到 Alexa 和 Ben 之间。然而，React 是电脑程序，它并不知道我们想要什么。因为 React 无法得知我们人类的意图，所以我们需要给每一个列表项一个确定的 key 属性，它可以用来区分不同的列表项和他们的同级兄弟列表项。你可以使用字符串，比如 alexa, ben, claudia。如果我们使用从数据库里获取的数据，那么 Alexa、Ben 和 Claudia 的数据库 ID 就可以作为 key 来使用。
 
+```javascript
 <li key={user.id}>{user.name}: {user.taskCount} tasks left</li>
+```
 每当一个列表重新渲染时，React 会根据每一项列表元素的 key 来检索上一次渲染时与每个 key 所匹配的列表项。如果 React 发现当前的列表有一个之前不存在的 key，那么就会创建出一个新的组件。如果 React 发现和之前对比少了一个 key，那么就会销毁之前对应的组件。如果一个组件的 key 发生了变化，这个组件会被销毁，然后使用新的 state 重新创建一份。
 
 key 是 React 中一个特殊的保留属性（还有一个是 ref，拥有更高级的特性）。当 React 元素被创建出来的时候，React 会提取出 key 属性，然后把 key 直接存储在返回的元素上。虽然 key 看起来好像是 props 中的一个，但是你不能通过 this.props.key 来获取 key。React 会通过 key 来自动判断哪些组件需要更新。组件是不能访问到它的 key 的。
@@ -884,7 +949,7 @@ key 是 React 中一个特殊的保留属性（还有一个是 ref，拥有更�
 在井字棋的历史记录中，每一个历史步骤都有一个与之对应的唯一 ID：这个 ID 就是每一步棋的序号。因为历史步骤不需要重新排序、新增、删除，所以使用步骤的索引作为 key 是安全的。
 
 在 Game 组件的 render 方法中，我们可以这样添加 key，<li key={move}>，这样关于 key 的警告就会消失了。
-
+```javascript
     const moves = history.map((step, move) => {
       const desc = move ?
         'Go to move #' + move :
@@ -895,12 +960,14 @@ key 是 React 中一个特殊的保留属性（还有一个是 ref，拥有更�
         </li>
       );
     });
+```
 查看此步完整代码示例
 
 因为 jumpTo 还未定义，所以你点击列表项的按钮时，会出现报错。在我们实现 jumpTo 之前，我们向 Game 组件的 state 中添加 stepNumber，这个值代表我们当前正在查看哪一项历史记录。
 
 首先，我们在 Game 的构造函数 constructor 中向初始 state 中添加 stepNumber: 0：
 
+```javascript
 class Game extends React.Component {
   constructor(props) {
     super(props);
@@ -912,8 +979,10 @@ class Game extends React.Component {
       xIsNext: true,
     };
   }
+```
 然后，我们在 Game 组件中定义 jumpTo 方法以更新状态 stepNumber。除此之外，当状态 stepNumber 是偶数时，我们还要把 xIsNext 设为 true：
 
+```javascript
   handleClick(i) {
     // 这个方法无更改
   }
@@ -928,12 +997,14 @@ class Game extends React.Component {
   render() {
     // 这个方法无更改
   }
+```
 接下来，我们还要修改 Game 组件的 handleClick 方法，当你点击方格的时候触发该方法。
 
 新添加的 stepNumber state 用于给用户展示当前的步骤。每当我们落下一颗新棋子的时候，我们需要调用 this.setState 并传入参数 stepNumber: history.length，以更新 stepNumber。这就保证了保证每走一步 stepNumber 会跟着改变。
 
 我们还把读取 this.state.history 换成了读取 this.state.history.slice(0, this.state.stepNumber + 1) 的值。如果我们“回到过去”，然后再走一步新棋子，原来的“未来”历史记录就不正确了，这个替换可以保证我们把这些“未来”的不正确的历史记录丢弃掉。
 
+```javascript
   handleClick(i) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
@@ -950,14 +1021,17 @@ class Game extends React.Component {
       xIsNext: !this.state.xIsNext,
     });
   }
+```
 最后，修改 Game 组件的 render 方法，将代码从始终根据最后一次移动渲染修改为根据当前 stepNumber 渲染。
 
+```javascript
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
 
     // 其他部分没有改变
+```
 如果我们点击游戏历史记录的任何一步，井字棋的棋盘就会立即更新为刚走那一步棋时候的样子。
 
 查看此步完整代码示例
