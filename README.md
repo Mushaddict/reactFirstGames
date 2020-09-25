@@ -1,3 +1,3 @@
 # reactFirstGames
 
-https://mushaddict.github.io/cs460student/
+https://mushaddict.github.io/reactFirstGames/
