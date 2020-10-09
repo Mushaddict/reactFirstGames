@@ -1,15 +1,15 @@
 实时保存学习网址
 https://zh-hans.reactjs.org/tutorial/tutorial.html
 
-##注意
+## 注意
 
 在 JavaScript class 中，每次你定义其子类的构造函数时，都需要调用 super 方法。因此，在所有含有构造函数的的 React 组件中，构造函数必须以 super(props) 开头。
 
 
-##课前准备
+## 课前准备
 我们将会在这个教程中开发一个小游戏。你可能并不打算做游戏开发，然后就直接跳过了这个教程——但是不妨尝试一下！你将在该教程中学到关于构建 React 应用的基础知识，掌握这些知识后，你将会对 React 有更加深刻的理解。
 
-##提示
+## 提示
 
 这篇教程适用于更喜欢边学边做的开发者，如果你更喜欢从头开始学习一些概念，请参考逐步学习指南。你会发现这篇教程和逐步学习指南是互补的。
 
@@ -165,7 +165,7 @@ class Square extends React.Component {
 ```
 如果此刻点击某个格子，浏览器会弹出提示框。
 
-##注意
+## 注意
 
 为了少输入代码，同时为了避免 this 造成的困扰，我们在这里使用箭头函数 来进行事件处理，如下所示：
 
@@ -180,7 +180,7 @@ class Square extends React.Component {
  }
 }
 ```
-##注意：此处使用了 onClick={() => alert('click')} 的方式向 onClick 这个 prop 传入一个函数。 React 将在单击时调用此函数。但很多人经常忘记编写 () =>，而写成了 onClick={alert('click')}，这种常见的错误会导致每次这个组件渲染的时候都会触发弹出框。
+## 注意：此处使用了 onClick={() => alert('click')} 的方式向 onClick 这个 prop 传入一个函数。 React 将在单击时调用此函数。但很多人经常忘记编写 () =>，而写成了 onClick={alert('click')}，这种常见的错误会导致每次这个组件渲染的时候都会触发弹出框。
 
 接下来，我们希望 Square 组件可以“记住”它被点击过，然后用 “X” 来填充对应的方格。我们用 state 来实现所谓“记忆”的功能。
 
@@ -206,7 +206,7 @@ class Square extends React.Component {
   }
 }
 ```
-##注意
+## 注意
 
 在 JavaScript class 中，每次你定义其子类的构造函数时，都需要调用 super 方法。因此，在所有含有构造函数的的 React 组件中，构造函数必须以 super(props) 开头。
 
@@ -327,7 +327,7 @@ Board 组件当前的 renderSquare 方法看起来像下面这样：
     );
   }
   ```
-##注意
+## 注意
 
 为了提高可读性，我们把返回的 React 元素拆分成了多行，同时在最外层加了小括号，这样 JavaScript 解析的时候就不会在 return 的后面自动插入一个分号从而破坏代码结构了。
 
@@ -359,7 +359,7 @@ class Square extends React.Component {
 事件处理函数触发了传入其中的 this.props.onClick() 方法。这个方法是由 Board 传递给 Square 的。
 由于 Board 把 onClick={() => this.handleClick(i)} 传递给了 Square，所以当 Square 中的事件处理函数触发时，其实就是触发的 Board 当中的 this.handleClick(i) 方法。
 现在我们还尚未定义 handleClick() 方法，所以代码还不能正常工作。如果此时点击 Square，你会在屏幕上看到红色的错误提示，提示内容为：“this.handleClick is not a function”。
-##注意
+## 注意
 
 因为 DOM 元素 <button> 是一个内置组件，因此其 onClick 属性在 React 中有特殊的含义。而对于用户自定义的组件来说，命名就可以由用户自己来定义了。我们给 Square 的 onClick 和 Board 的 handleClick 赋予任意的名称，代码依旧有效。在 React 中，有一个命名规范，通常会将代表事件的监听 prop 命名为 on[Event]，将处理事件的监听方法命名为 handle[Event] 这样的格式。
 
@@ -421,7 +421,7 @@ class Board extends React.Component {
 
 因为 Square 组件不再持有 state，因此每次它们被点击的时候，Square 组件就会从 Board 组件中接收值，并且通知 Board 组件。在 React 术语中，我们把目前的 Square 组件称做“受控组件”。在这种情况下，Board 组件完全控制了 Square 组件。
 
-##注意
+## 注意
 我们调用了 .slice() 方法创建了 squares 数组的一个副本，而不是直接在现有的数组上进行修改。在下一节，我们会介绍为什么我们需要创建 square 数组的副本。
 
 为什么不可变性在 React 中非常重要
@@ -478,7 +478,7 @@ function Square(props) {
 
 查看此步完整代码示例
 
-##注意
+## 注意
 
 当我们把 Square 修改成函数组件时，我们同时也把 onClick={() => this.props.onClick()} 改成了更短的 onClick={props.onClick}（注意两侧都没有括号）。
 
@@ -847,7 +847,7 @@ class Board extends React.Component {
     });
   }
 ```
-##注意
+## 注意
 
 concat() 方法可能与你比较熟悉的 push() 方法不太一样，它并不会改变原数组，所以我们推荐使用 concat()。
 
